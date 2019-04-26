@@ -1,18 +1,8 @@
-var express = require('express');
-var app = express();
-var http = require('http').Server(app);
-
-app.use(express.static(__dirname));
-
-var server = http.listen(process.env.PORT, () => {
-    console.log('server is listening on port', server.address().port);
-});
-
 function get(url) {
-    return new Promise(function (req, res) {
-        var httpRequest = new XMLHttpRequest();
+    return new Promise(function(req, res) {
+        let httpRequest = new XMLHttpRequest();
         httpRequest.open('GET', url);
-        httpRequest.onload = function () {
+        httpRequest.onload = function() {
             if (httpRequest.status === 200) {
                 // Return response text if promise is sucessful
                 req(httpRequest.response);
@@ -23,7 +13,7 @@ function get(url) {
         };
 
         // Handle network errors
-        httpRequest.onerror = function () {
+        httpRequest.onerror = function() {
             res(Error('Network Error'));
         };
 
@@ -37,7 +27,7 @@ function successHandler(data) {
     const div = `
         <h2>
         <img
-            src="https://openweathermap.org/img/w/${dataObj.weather[0].icon}.png"
+            src="http://openweathermap.org/img/w/${dataObj.weather[0].icon}.png"
             alt="${dataObj.weather[0].description}"
             width="50"
             height="50"
@@ -59,7 +49,7 @@ function tempToC(kelvin) {
     return (kelvin - 273.15).toFixed(0);
 }
 
-addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     // apiKey from OpenWeather
     const apiKey = 'f55738c0a1c34ff30d362068829d7fe3';
     // Empty apiKey to test server error
@@ -74,19 +64,19 @@ addEventListener('DOMContentLoaded', function () {
         'new+york,us'
     ];
 
-    const urls = locations.map(function (location) {
+    const urls = locations.map(function(location) {
         return `https://api.openweathermap.org/data/2.5/weather?q=${location}&APPID=${apiKey}`;
     });
 
     // Using async/wait
-    (async function () {
+    (async function() {
         try {
-            var responses = [];
+            let responses = [];
             responses.push(await get(urls[0]));
             responses.push(await get(urls[1]));
             responses.push(await get(urls[2]));
             responses.push(await get(urls[3]));
-            var literals = responses.map(function (response) {
+            let literals = responses.map(function(response) {
                 return successHandler(response);
             });
             weatherDiv.innerHTML = `<h1></h1>${literals.join('')}`;
