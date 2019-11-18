@@ -51,7 +51,7 @@ function tempToC(kelvin) {
 
 addEventListener('DOMContentLoaded', function () {
     // apiKey from OpenWeather
-    const apiKey = 'f55738c0a1c34ff30d362068829d7fe3';
+    const apiKey = '';
     // Empty apiKey to test server error
     // const apiKey = '';
 
